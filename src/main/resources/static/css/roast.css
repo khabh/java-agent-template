@@ -1,0 +1,85 @@
+body {
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.container {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 16px;
+  width: 600px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+select, input[type="file"], textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #334155;
+  color: white;
+}
+
+textarea {
+  resize: vertical;
+  font-family: monospace;
+}
+
+.toggle-group {
+  display: flex;
+  gap: 10px;
+}
+
+.toggle-group button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #475569;
+  color: white;
+}
+
+.toggle-group button:hover {
+  background: #64748b;
+}
+
+.roast-btn {
+  margin-top: 30px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ef4444, #f97316);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.roast-btn:hover {
+  transform: scale(1.05);
+}
+
+.result {
+  margin-top: 30px;
+  padding: 20px;
+  background: #111827;
+  border-radius: 12px;
+}
