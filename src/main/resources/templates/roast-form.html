@@ -4,14 +4,6 @@
   <title>Certificate Roast AI 🔥</title>
   <meta charset="UTF-8"/>
   <link rel="stylesheet" th:href="@{/css/roast.css}">
-  <script>
-    function toggleInput(mode) {
-      document.getElementById("fileInput").style.display =
-          mode === "file" ? "block" : "none";
-      document.getElementById("pemInput").style.display =
-          mode === "pem" ? "block" : "none";
-    }
-  </script>
 </head>
 <body>
 
@@ -19,53 +11,115 @@
 
   <h2>🔥 Certificate Roast AI</h2>
 
-  <form method="post" enctype="multipart/form-data" th:action="@{/roast}">
+  <form method="post"
+        enctype="multipart/form-data"
+        th:action="@{/roast}">
 
+    <!-- 인증서 타입 -->
     <label>인증서 타입</label>
     <select name="type" required>
-      <option value="root">Root CA</option>
-      <option value="sub">Sub CA</option>
-      <option value="leaf">Leaf</option>
+      <option value="root" th:selected="${type == 'root'}">Root CA</option>
+      <option value="sub" th:selected="${type == 'sub'}">Sub CA</option>
+      <option value="leaf" th:selected="${type == 'leaf'}">Leaf</option>
     </select>
 
+    <!-- 입력 방식 -->
     <label>입력 방식</label>
     <div class="toggle-group">
-      <button type="button" onclick="toggleInput('file')">파일 업로드</button>
-      <button type="button" onclick="toggleInput('pem')">PEM 직접 입력</button>
+      <button type="button"
+              onclick="setInputMode('file')"
+              th:classappend="${inputMode == 'file'} ? ' active'">
+        파일 업로드
+      </button>
+      <button type="button"
+              onclick="setInputMode('pem')"
+              th:classappend="${inputMode == 'pem'} ? ' active'">
+        PEM 직접 입력
+      </button>
     </div>
 
-    <input type="hidden" name="inputMode" id="inputMode" value="file"/>
+    <input type="hidden"
+           name="inputMode"
+           id="inputMode"
+           th:value="${inputMode != null ? inputMode : 'file'}"/>
 
-    <div id="fileInput">
+    <!-- 파일 업로드 -->
+    <div id="fileInput"
+         th:style="${inputMode == 'pem'} ? 'display:none;'">
       <label>인증서 파일 (PEM or DER)</label>
       <input type="file" name="file"/>
     </div>
 
-    <div id="pemInput" style="display:none;">
+    <!-- PEM 입력 -->
+    <div id="pemInput"
+         th:style="${inputMode == 'pem'} ? '' : 'display:none;'">
       <label>PEM 텍스트</label>
-      <textarea name="pemText" rows="12"
+      <textarea name="pemText"
+                rows="12"
                 placeholder="-----BEGIN CERTIFICATE-----"></textarea>
     </div>
 
-    <button type="submit" class="roast-btn">Roast 🔥</button>
+    <!-- 결과 모드 -->
+    <label>결과 모드</label>
+    <div class="toggle-group">
+      <button type="button"
+              onclick="setResultMode('normal')"
+              th:classappend="${resultMode == 'normal'} ? ' active'">
+        😌 일반 모드
+      </button>
+      <button type="button"
+              onclick="setResultMode('mudo')"
+              th:classappend="${resultMode == 'mudo'} ? ' active'">
+        🤯 무한도전 모드
+      </button>
+    </div>
+
+    <input type="hidden"
+           name="resultMode"
+           id="resultMode"
+           th:value="${resultMode != null ? resultMode : 'normal'}"/>
+
+    <button type="submit" class="roast-btn">
+      Roast 🔥
+    </button>
+
   </form>
 
+  <!-- 결과 영역 -->
   <div class="result" th:if="${result != null}">
-    <h3 th:text="'점수: ' + ${result.score} + ' / 10'"></h3>
-    <p th:text="${result.comment}"></p>
+
+    <div class="score"
+         th:text="'점수: ' + ${result.score} + ' / 10'">
+    </div>
+
+    <p class="comment"
+       th:text="${result.comment}">
+    </p>
+
+    <!-- 이미지 출력 -->
+    <div class="image-wrapper" th:if="${imagePath != null}">
+      <img th:src="@{${imagePath}}"
+           alt="roast image"/>
+    </div>
+
   </div>
 
 </div>
 
 <script>
-  document.querySelectorAll(".toggle-group button")
-  .forEach(btn => {
-    btn.addEventListener("click", e => {
-      const mode = e.target.innerText.includes("파일") ? "file" : "pem";
-      document.getElementById("inputMode").value = mode;
-      toggleInput(mode);
-    });
-  });
+  function setInputMode(mode) {
+    document.getElementById("inputMode").value = mode;
+
+    document.getElementById("fileInput").style.display =
+        mode === "file" ? "block" : "none";
+
+    document.getElementById("pemInput").style.display =
+        mode === "pem" ? "block" : "none";
+  }
+
+  function setResultMode(mode) {
+    document.getElementById("resultMode").value = mode;
+  }
 </script>
 
 </body>
