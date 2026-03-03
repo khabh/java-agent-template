@@ -27,12 +27,12 @@
     <label>입력 방식</label>
     <div class="toggle-group">
       <button type="button"
-              onclick="setInputMode('file')"
+              onclick="setInputMode('file', this)"
               th:classappend="${inputMode == 'file'} ? ' active'">
         파일 업로드
       </button>
       <button type="button"
-              onclick="setInputMode('pem')"
+              onclick="setInputMode('pem', this)"
               th:classappend="${inputMode == 'pem'} ? ' active'">
         PEM 직접 입력
       </button>
@@ -63,12 +63,12 @@
     <label>결과 모드</label>
     <div class="toggle-group">
       <button type="button"
-              onclick="setResultMode('normal')"
+              onclick="setResultMode('normal', this)"
               th:classappend="${resultMode == 'normal'} ? ' active'">
         😌 일반 모드
       </button>
       <button type="button"
-              onclick="setResultMode('mudo')"
+              onclick="setResultMode('mudo', this)"
               th:classappend="${resultMode == 'mudo'} ? ' active'">
         🤯 무한도전 모드
       </button>
@@ -107,7 +107,7 @@
 </div>
 
 <script>
-  function setInputMode(mode) {
+  function setInputMode(mode, el) {
     document.getElementById("inputMode").value = mode;
 
     document.getElementById("fileInput").style.display =
@@ -115,10 +115,21 @@
 
     document.getElementById("pemInput").style.display =
         mode === "pem" ? "block" : "none";
+
+    updateActive(el);
   }
 
-  function setResultMode(mode) {
+  function setResultMode(mode, el) {
     document.getElementById("resultMode").value = mode;
+    updateActive(el);
+  }
+
+  function updateActive(button) {
+    const group = button.parentElement;
+    group.querySelectorAll("button")
+    .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
   }
 </script>
 
