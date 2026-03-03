@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Certificate Roast AI 🔥</title>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+
+<h2>🔥 Certificate Roast AI</h2>
+
+<form method="post" enctype="multipart/form-data" th:action="@{/roast}">
+  <label>인증서 타입:</label>
+  <select name="type" required>
+    <option value="root">Root CA</option>
+    <option value="sub">Sub CA</option>
+    <option value="leaf">Leaf</option>
+  </select>
+
+  <br/><br/>
+
+  <label>인증서 파일 (PEM or DER):</label>
+  <input type="file" name="file" required/>
+
+  <br/><br/>
+  <button type="submit">Roast 🔥</button>
+</form>
+
+<div th:if="${result != null}">
+  <hr/>
+  <h3 th:text="'점수: ' + ${result.score} + ' / 10'"></h3>
+  <p th:text="${result.comment}"></p>
+</div>
+
+</body>
+</html>
